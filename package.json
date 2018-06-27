@@ -1,0 +1,22 @@
+{
+  "name": "itc230",
+  "version": "1.0.0",
+  "description": "Class repo",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/michaelnomura/itc230.git"
+  },
+  "author": "michael nomura",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/michaelnomura/itc230/issues"
+  },
+  "homepage": "https://github.com/michaelnomura/itc230#readme",
+  "dependencies": {
+    "package.json": "^2.0.1"
+  }
+}
