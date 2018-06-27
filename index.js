@@ -26,7 +26,7 @@ var path = req.url.toLowerCase();
         break;
     default:
       res.writeHead(404, {'Content-Type': 'text/plain'});
-      res.end('Not found');
+      res.end('404 | Not found');
       break;
     }
 }).listen(process.env.PORT || 3000);
