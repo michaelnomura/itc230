@@ -1,35 +1,8 @@
 var http = require("http");
 var fs = require("fs");
 const querystring = require('querystring');
-
-//a data array of at least 5 items, where each item has at least 3 attributes (key:value pairs). 
-//Determine which attribute will serve as a unique key (e.g. book title) to prevent duplicates,
-var music = [
-{ name : "Tupac", album : "Me Against the World", year : 1995 },
-{ name : "Dr. Dre", album : "The Chronic", year : 1992 },
-{ name : "Snoop Dogg", album : "Doggystyle", year : 1993 }
-];
-
-//a getAll method that returns all array items, 
-function getAllAlbums(array1) {
-    var allAlbums = array1.toString();
-    return allAlbums; 
-    }
-//a get method to return the requested array item,  
-function getAlbum (tempKey, array1) { 
-    var album = array1.find(tempKey).toString();
-    return album; 
-    }
-//a delete method to delete the requested item from your array.
-function deleteAlbums(array1) { 
-    //find index
-    array1.find(function(array1){
-        return array1.name === tempKey;
-    })
-    //delete using splice
-    return successMessage; 
-    }
-//export these 3 methods for use by other scripts
+var url = require('url');
+var music = require('./music.js');
 
 //Import the new module into your index.js script,
 //Update index.js with new routes for /get & /delete. 
@@ -38,9 +11,12 @@ function deleteAlbums(array1) {
 //http://localhost:3000/get?title=dune 
 
 http.createServer(function(req,res) {
-var path = req.url.toLowerCase();
-var q = url.parse(req.url, true).query;
 
+var q = url.parse(req.url, true);
+var path = q.pathname;
+    
+    //res.writeHead(200, {'Content-Type': 'text/plain'});
+    //res.end('404 | Not found' + q.pathname);
     switch(path) {
     case '/':
         fs.readFile('public/home.html', function (err, data) {
@@ -57,16 +33,36 @@ var q = url.parse(req.url, true).query;
         });
     break;
     case '/get':
-        if (err) return console.error(err);
-        res.writeHead(200, {'Content-Type': 'text/plain'})
+        //console.log(q.search);
+        res.writeHead(200, {'Content-Type': 'text/plain'});
+        //console.log(q.search);
+        var qdata = q.query;
+        //console.log(qdata.name);
+        var found = music.get(qdata.name);
+        if (found) {
+            str = JSON.stringify(found);
+        //console.log(str);
+        res.end(str);
+        } else {
+            res.end('Error does not exist');
+            //insert error
+        }
+        
     break;
-    case '/test':
-        fs.readFile('input.html', function (err, data) {
-        if (err) return console.error(err);
-        res.writeHead(200, {'Content-Type': 'text/html'});
-        res.end(data.toString());
-        });
-        break;
+    case '/delete':
+        res.writeHead(200, {'Content-Type': 'text/plain'});
+        var qdata = q.query;
+        var found = music.get(qdata.name);
+        if (found) {
+            //delete item function
+            music.delete(qdata.name);
+            //console.log(str);
+        res.end('Deleted');
+        } else {
+            //insert error
+            res.end('Error does not exist');
+        }
+    break;
     default:
       res.writeHead(404, {'Content-Type': 'text/plain'});
       res.end('404 | Not found');
