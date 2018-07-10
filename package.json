@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/michaelnomura/itc230#readme",
   "dependencies": {
+    "express": "^4.16.3",
     "package.json": "^2.0.1"
   }
 }
