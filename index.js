@@ -44,7 +44,7 @@ var path = q.pathname;
         //console.log(str);
         res.end(str);
         } else {
-            res.end('Error does not exist');
+            res.end('Error ' + qdata.name + ' does not exist');
             //insert error
         }
         
@@ -57,10 +57,10 @@ var path = q.pathname;
             //delete item function
             music.delete(qdata.name);
             //console.log(str);
-        res.end('Deleted');
+        res.end(qdata.name + ' Deleted');
         } else {
             //insert error
-            res.end('Error does not exist');
+            res.end('Error ' + qdata.name + ' does not exist');
         }
     break;
     default:

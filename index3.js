@@ -4,12 +4,6 @@ const querystring = require('querystring');
 var url = require('url');
 var music = require('./music.js');
 
-//Import the new module into your index.js script,
-//Update index.js with new routes for /get & /delete. 
-//Each route should invoke the corresponding data-module method and 
-//send the returned value on the server response. For example this request:
-//http://localhost:3000/get?title=dune 
-
 http.createServer(function(req,res) {
 
 var q = url.parse(req.url, true);
