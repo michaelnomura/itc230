@@ -1,71 +1,60 @@
-var http = require("http");
-var fs = require("fs");
-const querystring = require('querystring');
-var url = require('url');
+const express = require("express");
+const app = express();
 var music = require('./music.js');
 
-//Import the new module into your index.js script,
-//Update index.js with new routes for /get & /delete. 
-//Each route should invoke the corresponding data-module method and 
-//send the returned value on the server response. For example this request:
-//http://localhost:3000/get?title=dune 
+app.set('port', process.env.PORT || 3000);
+app.use(express.static(__dirname + '/public')); // set location for static files
+app.use(require("body-parser").urlencoded({extended: true})); // parse form submissions
 
-http.createServer(function(req,res) {
+let handlebars =  require("express-handlebars");
+app.engine(".html", handlebars({extname: '.html'}));
+app.set("view engine", ".html");
 
-var q = url.parse(req.url, true);
-var path = q.pathname;
-    
-    //res.writeHead(200, {'Content-Type': 'text/plain'});
-    //res.end('404 | Not found' + q.pathname);
-    switch(path) {
-    case '/':
-        fs.readFile('public/home.html', function (err, data) {
-        if (err) return console.error(err);
-        res.writeHead(200, {'Content-Type': 'text/html'});
-        res.end(data.toString());
-        });
-        break;
-    case '/about':       
-        fs.readFile('package.json', function (err, data) {
-        if (err) return console.error(err);
-        res.writeHead(200, {'Content-Type': 'application/json'});
-        res.end(data.toString());
-        });
-    break;
-    case '/get':
-        //console.log(q.search);
-        res.writeHead(200, {'Content-Type': 'text/plain'});
-        //console.log(q.search);
-        var qdata = q.query;
-        //console.log(qdata.name);
-        var found = music.get(qdata.name);
-        if (found) {
-            str = JSON.stringify(found);
-        //console.log(str);
-        res.end(str);
-        } else {
-            res.end('Error ' + qdata.name + ' does not exist');
-            //insert error
-        }
-        
-    break;
-    case '/delete':
-        res.writeHead(200, {'Content-Type': 'text/plain'});
-        var qdata = q.query;
-        var found = music.get(qdata.name);
-        if (found) {
-            //delete item function
-            music.delete(qdata.name);
-            //console.log(str);
-        res.end(qdata.name + ' Deleted');
-        } else {
-            //insert error
-            res.end('Error ' + qdata.name + ' does not exist');
-        }
-    break;
-    default:
-      res.writeHead(404, {'Content-Type': 'text/plain'});
-      res.end('404 | Not found');
-      break;
-    }
-}).listen(process.env.PORT || 3000);
+//Convert your index.js script from the previous assignment to Express application syntax,
+
+//Update your home.html page to display a ‘Search’ form with a text field corresponding the 
+//key field in your list. For example, if your application is a book list, users could search 
+//for a book title.
+// send static file as response
+app.get('/', (req, res) => {
+ res.type('text/html');
+ res.sendFile(__dirname + '/public/home.html'); 
+});
+
+app.get('/test', (req,res) => {
+ res.type('application/json');
+ res.sendFile(__dirname + '/package.json');
+});
+
+// send plain text response
+app.get('/about', (req, res) => {
+ res.type('text/plain');
+ res.send('About page');
+});
+
+app.get('/get', (req, res) => {
+    var found = music.get(req.query.name.toLowerCase());
+    res.render('details', {title: req.query.name.charAt(0).toUpperCase() + req.query.name.substr(1), result: found });
+});
+
+app.post('/get', (req, res) => {
+    var found = music.get(req.body.name.toLowerCase());
+    res.render('details', {title: req.body.name, result: found });
+});
+
+app.get('/delete', (req, res) => {
+    var found = music.delete(req.query.name);
+    res.render('delete', {title: req.query.name, result: found });
+});
+
+// define 404 handler
+app.use( (req,res) => {
+ res.type('text/plain'); 
+ res.status(404);
+ res.send('404 - Not found');
+});
+
+app.listen(app.get('port'), () => {
+ console.log('Express started'); 
+});
+

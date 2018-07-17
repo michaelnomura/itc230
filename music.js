@@ -15,24 +15,20 @@ exports.getAllAlbums = () => {
 //a get method to return the requested array item,  
 exports.get = (name) => { 
     return music.find((album) => {
-        if(name){
-           return album.name.toLowerCase() == name.toLowerCase() ;
-        }else{
-            return 'error';
-        }   
-    });
+        return album.name.toLowerCase() == name;
+        });
 }
-//a delete method to delete the requested item from your array.
-exports.delete = (name) => { 
-    music.some((item, index) => {
-        if(music[index][name.key] === name.value){
-            //found
-            music.splice(index, 1);
-            return true;
-        }
-        return false;
-    });
-    return music;
 
-}   
+//a delete method to delete the requested item from your array.
+exports.delete = (name) => {
+    var found = music.findIndex((album) => {
+        return album.name.toLowerCase() == name.toLowerCase() ;
+        });
+    if (found>-1) {
+        music.splice(found,1);
+        return true;
+    } 
+    return false;
+}
+
 

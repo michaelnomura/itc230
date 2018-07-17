@@ -1,0 +1,18 @@
+<html>
+<head>
+    <title>{{title}}</title>
+    </head>
+<body>
+  <h2>Details for {{title}}</h2>
+  {{#if result}}
+    <li>Album: {{ result.album }}</li>
+    <li>Year: {{ result.year }}</li>
+    <br>
+    <p><a href="/">Back</a></p>
+    <p><a href="delete?name={{title}}">Delete</a></p>
+  {{else}}
+    <p>Not found</p>
+    <p><a href="/">Back</a></p>
+  {{/if}}        
+</body>
+</html> 
