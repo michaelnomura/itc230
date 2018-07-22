@@ -4,9 +4,12 @@
     </head>
 <body>
     <h1>Search</h1>
-    <form action="/get" method="post">
+    <form action="/get" method="get">
     Name: <input type="text" name="name"><br>
     <input type="submit" value="Submit">
     </form>
+    {{#each albums}}
+ <li><a href=" ./get?name={{title}}">{{title}}</a></li>
+{{/each}}
     </body>
 </html>

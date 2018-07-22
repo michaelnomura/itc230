@@ -2,6 +2,8 @@ const express = require("express");
 const app = express();
 var music = require('./music.js');
 
+var albumMethods = require("./albumMethods.js");
+
 app.set('port', process.env.PORT || 3000);
 app.use(express.static(__dirname + '/public')); // set location for static files
 app.use(require("body-parser").urlencoded({extended: true})); // parse form submissions
@@ -16,15 +18,6 @@ app.set("view engine", ".html");
 //key field in your list. For example, if your application is a book list, users could search 
 //for a book title.
 // send static file as response
-app.get('/', (req, res) => {
- res.type('text/html');
- res.sendFile(__dirname + '/public/home.html'); 
-});
-
-app.get('/test', (req,res) => {
- res.type('application/json');
- res.sendFile(__dirname + '/package.json');
-});
 
 // send plain text response
 app.get('/about', (req, res) => {
@@ -33,18 +26,29 @@ app.get('/about', (req, res) => {
 });
 
 app.get('/get', (req, res) => {
-    var found = music.get(req.query.name.toLowerCase());
-    res.render('details', {title: req.query.name.charAt(0).toUpperCase() + req.query.name.substr(1), result: found });
+    albumMethods.get(req.query.name.toLowerCase()).then((item) => {
+        console.log(item);
+    res.render('details', {title: req.query.name, result: item }); 
+  }).catch((err) =>{
+    return next(err);
+  });
 });
 
-app.post('/get', (req, res) => {
-    var found = music.get(req.body.name.toLowerCase());
-    res.render('details', {title: req.body.name, result: found });
+app.get('/', (req, res, next) => {
+  albumMethods.getAll().then((items) => {
+    res.render('home', {albums: items }); 
+  }).catch((err) =>{
+    return next(err);
+  });
 });
 
 app.get('/delete', (req, res) => {
-    var found = music.delete(req.query.name);
-    res.render('delete', {title: req.query.name, result: found });
+     albumMethods.delete(req.query.name.toLowerCase()).then((item) => {
+        console.log(item);
+    res.render('delete', {title: req.query.name}); 
+  }).catch((err) =>{
+    return next(err);
+  });
 });
 
 // define 404 handler
