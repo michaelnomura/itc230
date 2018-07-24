@@ -1,0 +1,17 @@
+<html>
+<head>
+    <title>Add</title>
+    </head>
+<body>
+    <h1>Add</h1>
+    <form action="/get" method="post">
+    Title: <input type="text" name="name"><br>
+    Author: <input type="text" name="title"><br>
+    Year: <input type="number" name="year"><br>
+    <input type="submit" value="Submit">
+    </form>
+    {{#each albums}}
+ <li><a href=" ./get?name={{title}}">{{title}}</a></li>
+{{/each}}
+    </body>
+</html>

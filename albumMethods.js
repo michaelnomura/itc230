@@ -16,34 +16,29 @@ exports.get = (title) => {
       }
     return item;
     }); 
-    };
+};
 
-// return a single record
-/*exports.delete = (title) => {
-    return Album.find({'title':title},(err, item) => {
-        if (err) throw err;
-        item.remove(function(err) {
-            if (err) throw err;
-            });
-        }); 
-    };*/
 
-exports.delete = (title) => {    
-    return Album.findOneAndRemove({'title':title}, function(err) {
-        if (err) throw err;
+exports.delete = (title) => {
 
-        // we have deleted the user
-        console.log('User deleted!');
+    return Album.findOneAndRemove({'title':title}, (err) => {
+        if (err) { 
+            return err;
+        }
     });
 };
 
-/*exports.delete = (title) => {
-    return Album.remove({'title':title},(err, item) => {
-      if (err) {
-          return err;
-      }
-    return true;
-    }); 
-    };*/
-
+exports.add = (title,author,year) => {
+    var newAlbum = Album({
+        title: {'title':title},
+        author: {'author':author},
+        year: {'year':year}
+    })
+    
+    newAlbum.save( (err) => {
+        if (err) throw err;
+        
+        return 'success';
+    });
+}
 

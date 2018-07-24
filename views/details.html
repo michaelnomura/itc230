@@ -4,11 +4,10 @@
     </head>
 <body>
   <h2>Details for {{title}}</h2>
-    {{ result }}
     <p>
-    {{result.year}}
     </p>
   {{#if result}}
+    <li>Title: {{result.title}}</li>
     <li>Author: {{ result.author }}</li>
     <li>Year: {{ result.year }}</li>
     <br>

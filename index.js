@@ -45,7 +45,7 @@ app.get('/', (req, res, next) => {
 app.get('/delete', (req, res) => {
      albumMethods.delete(req.query.name.toLowerCase()).then((item) => {
         console.log(item);
-    res.render('delete', {title: req.query.name}); 
+    res.render('delete', {title: req.query.name, result:item }); 
   }).catch((err) =>{
     return next(err);
   });
