@@ -3,7 +3,12 @@
     <title>Delete</title>
     </head>
 <body>
-  <h2>{{title}} Deleted</h2>
-    <a href="./">Back</a>
+  <h2>Details for {{title}}</h2>
+  {{#if result}}
+    <p>{{title}} deleted</p>
+  {{else}}
+    <h1>{{title}} not found</h1>
+  {{/if}}
+    <p><a href="/">Back</a></p>
 </body>
 </html>

@@ -19,14 +19,15 @@ exports.get = (title) => {
 };
 
 
-exports.delete = (title) => {
-
-    return Album.findOneAndRemove({'title':title}, (err) => {
-        if (err) { 
+exports.delete = (title) => {   
+    return Album.findOneAndRemove({'title':title},(err, item) => {
+        if (err) {
             return err;
         }
-    });
-};
+        return item;
+    })
+}
+
 
 exports.add = (title,author,year) => {
     var newAlbum = Album({
