@@ -11,5 +11,13 @@
     {{#each albums}}
  <li><a href=" ./get?name={{title}}">{{title}}</a></li>
 {{/each}}
+    
+<h1>Add</h1>
+    <form action="/api/v1/new_album" method="post">
+    Title: <input type="text" name="title"><br>
+    Author: <input type="text" name="author"><br>
+    Year: <input type="number" name="year"><br>
+    <input type="submit" value="Submit">
+    </form>
     </body>
 </html>

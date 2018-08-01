@@ -29,17 +29,18 @@ exports.delete = (title) => {
 }
 
 
-exports.add = (title,author,year) => {
-    var newAlbum = Album({
-        title: {'title':title},
-        author: {'author':author},
-        year: {'year':year}
+exports.addAlbum = (newAlbum) => {
+    return Album.update({'title':newAlbum.title}, newAlbum, {upsert:true}, (err,result) => {
+        if (err) {
+            return err;
+        }
+        return newAlbum;
     })
-    
-    newAlbum.save( (err) => {
-        if (err) throw err;
-        
-        return 'success';
-    });
 }
+
+exports.countAlbums = () => {
+    return Album.count();
+    console.log(Album);
+}
+    
 

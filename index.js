@@ -3,6 +3,7 @@ const app = express();
 var music = require('./music.js');
 
 var albumMethods = require("./albumMethods.js");
+var Album = require("./models/Albums.js");
 
 app.set('port', process.env.PORT || 3000);
 app.use(express.static(__dirname + '/public')); // set location for static files
@@ -11,6 +12,8 @@ app.use(require("body-parser").urlencoded({extended: true})); // parse form subm
 let handlebars =  require("express-handlebars");
 app.engine(".html", handlebars({extname: '.html'}));
 app.set("view engine", ".html");
+
+app.use('/api', require('cors')());
 
 //Convert your index.js script from the previous assignment to Express application syntax,
 
@@ -28,28 +31,96 @@ app.get('/about', (req, res) => {
 app.get('/get', (req, res) => {
     albumMethods.get(req.query.name.toLowerCase()).then((item) => {
         console.log(item);
-    res.render('details', {title: req.query.name, result: item }); 
-  }).catch((err) =>{
+        res.render('details', {title: req.query.name, result: item }); 
+    }).catch((err) =>{
     return next(err);
   });
 });
+
+app.get('/api/v1/album/:name',(req,res,next) => {
+    albumMethods.get(req.params.name.toLowerCase()).then((item) => {
+        //console.log(req.params.name);
+        if (!item){
+            //insert error via json
+            var erMsg = [
+                {"found":false}
+            ]
+            res.json(erMsg);
+        }else{
+            res.json(item);
+        }
+        
+        
+    }).catch((err) => {
+    return next(err);
+    })   
+})
 
 app.get('/', (req, res, next) => {
-  albumMethods.getAll().then((items) => {
-    res.render('home', {albums: items }); 
-  }).catch((err) =>{
-    return next(err);
-  });
+    albumMethods.getAll().then((items) => {
+        
+        res.render('home', {albums: items }); 
+        
+    }).catch((err) =>{
+        return next(err);
+    });
 });
 
+
+app.get('/api/v1/albums',(req,res,next) => {
+    albumMethods.getAll().then((items) => {
+        if (!items){
+            //insert error via json
+            var erMsg = [
+                {"found":false}
+            ]
+            res.json(erMsg);
+        }else{
+            console.log(JSON.stringify(items));
+            res.json(items);
+        }      
+    }).catch((err) => {
+        return next(err);
+    })
+})
+
 app.get('/delete', (req, res) => {
-     albumMethods.delete(req.query.name.toLowerCase()).then((item) => {
-        console.log(item);
-    res.render('delete', {title: req.query.name, result:item }); 
-  }).catch((err) =>{
+    albumMethods.delete(req.query.name.toLowerCase()).then((item) => {
+        //console.log(item);
+        res.render('delete', {title: req.query.name, result:item }); 
+    }).catch((err) =>{
     return next(err);
-  });
+    });
 });
+
+app.get('/api/v1/album/delete/:name',(req,res,next) => {
+    albumMethods.delete(req.params.name.toLowerCase()).then((item) => {
+        if (!item){
+            //insert error via json
+            var erMsg = [
+                {"found":false},
+                //{"total items":Album.length+1}
+            ]
+            res.json(erMsg);
+        }else{
+            console.log(item);
+            res.json(item);
+        }
+        //console.log(req.params.name);
+        //res.json(item);
+    }).catch((err) => {
+    return next(err);
+    })   
+})
+
+app.post('/api/v1/new_album', (req, res, next) => {
+    albumMethods.addAlbum(req.body).then((newAlbum) => {
+        res.json(newAlbum); 
+    }).catch((err) =>{
+        return next(err);
+    });
+});
+
 
 // define 404 handler
 app.use( (req,res) => {
