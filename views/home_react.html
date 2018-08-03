@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Add React in One Minute</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.6.0/react.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.6.0/react-dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.25.0/babel.min.js"></script>
+    </head>
+    <body>
+
+    <!-- We will put our React component inside this div. -->
+    <div id="album_container"></div>
+    <div id="root"></div>
+
+
+
+    <!-- Load our React component. -->
+    <script type="text/babel">
+        class AlbumApp extends React.Component{
+            constructor(props){
+                super(props);
+                this.state = {
+                    items: {{{albums}}},
+                    curItem: {}
+                };
+        }
+        
+        showDetails(event){
+            let editItem = this.state.items.find((item) => {
+                return item._id == event.target.id;
+            });
+            this.setState({curItem: editItem});
+        }
+        
+        render(){
+            return(
+                <div>
+                <Title title="Store" />
+                <ItemList 
+                    items={this.state.items}
+                    show={this.showDetails.bind(this)}
+                />
+                <ItemDetails item={this.state.curItem} />
+                </div>
+            );
+        }
+    }
+    const Title = ({title}) => {
+        return (
+        <div><h2>{title}</h2></div>)
+    }
+    
+    const ItemList = ({items,show}) => {
+        let fulllist = items.map((item) => {
+            return <li id={item._id} key={item._id} onClick={show}>{item.title}</li>
+        });
+        
+        //console.log(fulllist);
+                      
+        return (
+            <ul>{fulllist}</ul>
+        )
+    }
+    
+    const ItemDetails = (props) => {
+        return (
+          <span id="item-details">
+            <h3>Details:</h3>
+                <ul>
+                    <li>{props.item.title || ""}</li>
+                    <li>{props.item.author || ""}</li>
+                    <li>{props.item.year || ""}</li>
+                </ul>
+          </span>
+        );
+    }
+    
+    ReactDOM.render(<AlbumApp />, document.getElementById('root'));
+
+    
+    </script>
+
+  </body>
+</html>

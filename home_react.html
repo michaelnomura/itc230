@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Add React in One Minute</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.6.0/react.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.6.0/react-dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.25.0/babel.min.js"></script>
+    </head>
+    <body>
+
+    <!-- We will put our React component inside this div. -->
+    <div id="album_container"></div>
+    <div id="root"></div>
+
+
+
+    <!-- Load our React component. -->
+    <script type="text/babel">
+        class AlbumApp extends React.Component{
+            constructor(props){
+                super(props);
+                this.state = {
+                    items: {{{albums}}}
+                };
+        }
+        
+        render(){
+            return(
+                <div>
+                <Title title="Record Store" />
+                <div class="flex-container">
+                <ItemList
+                    items={this.state.items}
+                />
+                </div>
+                </div>
+            );
+        }
+    }
+    const Title = ({title}) => {
+        return (
+        <div><h2>{title}</h2></div>)
+    }
+    
+    React.BOM.render(<AlbumApp />, document.getElementById('root'));
+
+    function ItemList(props) {
+        return 'string';
+//    return user.firstName + ' ' + user.lastName;
+}
+    </script>
+
+  </body>
+</html>

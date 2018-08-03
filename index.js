@@ -66,6 +66,15 @@ app.get('/', (req, res, next) => {
     });
 });
 
+app.get('/test', (req, res, next) => {
+    albumMethods.getAll().then((items) => {
+        
+        res.render('home_react', {albums: JSON.stringify(items) }); 
+        
+    }).catch((err) =>{
+        return next(err);
+    });
+});
 
 app.get('/api/v1/albums',(req,res,next) => {
     albumMethods.getAll().then((items) => {
