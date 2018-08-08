@@ -111,6 +111,7 @@
                 <Title title="Store" />
                 <ItemList 
                     items={this.state.items}
+                    filter={this.state.filter}
                     show={this.showDetails.bind(this)}
                 />
                 <ItemDetails item={this.state.curItem} onChange={this.onChange} save={this.onSave} delete={this.onDelete}/>
@@ -124,6 +125,18 @@
         return (
         <div><h2>{title}</h2></div>
         );
+    }
+    
+    const SearchForm = (props) => {
+        return (
+            <div>
+                <input
+                    type="text" placeholder="Enter a search term"
+                    value={props.filter}
+                    onChange={props.change}>
+                </input><p/>
+            </div>
+        )
     }
     
     const ItemList = ({items,show}) => {
