@@ -126,8 +126,23 @@ app.get('/api/v1/album/delete/:name',(req,res,next) => {
 
 app.post('/api/v1/new_album', (req, res, next) => {
     albumMethods.addAlbum(req.body).then((result) => {
-        console.log(result);    
-        res.json(result);
+        console.log(result.nModified); 
+        var msg = {};
+        if (result.nModified===1) {
+            
+            var msg = 
+                {"new":false,
+                "modified":true
+                }
+        }else{
+            var msg = 
+                {"new":true,
+                "modified":false
+                }
+            
+            }
+
+        res.json(msg);
         
     }).catch((err) =>{
         return next(err);
