@@ -1,4 +1,5 @@
 const express = require("express");
+const bodyParser = require("body-parser")
 const app = express();
 var music = require('./music.js');
 
@@ -7,7 +8,8 @@ var Album = require("./models/Albums.js");
 
 app.set('port', process.env.PORT || 3000);
 app.use(express.static(__dirname + '/public')); // set location for static files
-app.use(require("body-parser").urlencoded({extended: true})); // parse form submissions
+app.use(bodyParser.urlencoded({extended: true})); // parse form submissions
+app.use(bodyParser.json());
 
 let handlebars =  require("express-handlebars");
 app.engine(".html", handlebars({extname: '.html'}));
@@ -123,24 +125,10 @@ app.get('/api/v1/album/delete/:name',(req,res,next) => {
 })
 
 app.post('/api/v1/new_album', (req, res, next) => {
-    albumMethods.addAlbum(req.body).then((newAlbum) => {
-        //
-        //console.log(newAlbum.nModified)
-        //res.json(newAlbum.nModified); 
-        if (newAlbum==1) {
-            var msg = [
-                {"new":false},
-                {"modified":true}
-            ]
-            res.json(msg);
-        }else{
-            var msg = [
-                {"new":true},
-                {"modified":false}
-            ]
-            
-            res.json(msg);
-        }
+    albumMethods.addAlbum(req.body).then((result) => {
+        console.log(result);    
+        res.json(result);
+        
     }).catch((err) =>{
         return next(err);
     });
