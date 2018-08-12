@@ -142,7 +142,7 @@ app.post('/api/v1/new_album', (req, res, next) => {
             
             }
 
-        res.json(msg);
+        res.json(result);
         
     }).catch((err) =>{
         return next(err);

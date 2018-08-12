@@ -34,23 +34,7 @@ exports.addAlbum = (newAlbum) => {
         if (err) {
             return err;
         }
-        //console.log(result);
-        var msg = {};
-        if (result.nModified) {
-            
-            var msg = 
-                {"new":false,
-                "modified":true
-                }
-        }else{
-            var msg = 
-                {"new":true,
-                "id":result.upserted[0]._id
-                }
-            
-            }
-        console.log (msg);
-        return msg;
+        return result;
         
     })
 }
