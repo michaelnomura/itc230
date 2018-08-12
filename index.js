@@ -126,6 +126,7 @@ app.get('/api/v1/album/delete/:name',(req,res,next) => {
 
 app.post('/api/v1/new_album', (req, res, next) => {
     albumMethods.addAlbum(req.body).then((result) => {
+<<<<<<< HEAD
         console.log(result.nModified); 
         var msg = {};
         if (result.nModified===1) {
@@ -142,6 +143,9 @@ app.post('/api/v1/new_album', (req, res, next) => {
             
             }
 
+=======
+        console.log(result);    
+>>>>>>> parent of a6cf6f9... refactor
         res.json(result);
         
     }).catch((err) =>{
