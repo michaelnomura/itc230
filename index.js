@@ -61,7 +61,7 @@ app.get('/api/v1/album/:name',(req,res,next) => {
 app.get('/', (req, res, next) => {
     albumMethods.getAll().then((items) => {
         
-        res.render('home', {albums: items }); 
+        res.render('home_react', {albums: JSON.stringify(items) }); 
         
     }).catch((err) =>{
         return next(err);
