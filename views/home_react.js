@@ -28,7 +28,7 @@
                 this.onChange = this.onChange.bind(this);
                 this.onSave = this.onSave.bind(this);
                 this.onDelete = this.onDelete.bind(this);
-                this.onClear = this.onClear.bind(this);
+                //this.onClear = this.onClear.bind(this);
             }
             
             //handle changes to search form
@@ -62,7 +62,7 @@
                     return;
                 }
                 
-                fetch("/api/v1/add/", {
+                fetch("/api/v1/new_album", {
                     method: "POST",
         	           headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(newItem)
@@ -106,7 +106,7 @@
                     items={this.state.items}
                     show={this.showDetails.bind(this)}
                 />
-                <ItemDetails item={this.state.curItem} onChange={this.onChange} save={this.onSave} reset={this.onClear} delete={this.onDelete}/>
+                <ItemDetails item={this.state.curItem} onChange={this.onChange} save={this.onSave} delete={this.onDelete}/>
                 </div>
             );
         }

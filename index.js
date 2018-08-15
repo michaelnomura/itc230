@@ -126,31 +126,29 @@ app.get('/api/v1/album/delete/:name',(req,res,next) => {
 
 app.post('/api/v1/new_album', (req, res, next) => {
     albumMethods.addAlbum(req.body).then((result) => {
-<<<<<<< HEAD
-        console.log(result.nModified); 
-        var msg = {};
-        if (result.nModified===1) {
-            
-            var msg = 
-                {"new":false,
-                "modified":true
-                }
-        }else{
-            var msg = 
-                {"new":true,
-                "modified":false
-                }
-            
-            }
-
-=======
-        console.log(result);    
->>>>>>> parent of a6cf6f9... refactor
+        //console.log(result);    
         res.json(result);
         
     }).catch((err) =>{
         return next(err);
     });
+});
+
+app.post('/api/v1/add/', (req,res, next) => {
+    // find & update existing item, or add new 
+    if (!req.body._id) { // insert new document
+        let album = new Album({title:req.body.title,author:req.body.author,pubdate:req.body.pubdate});
+        album.save((err,newAlbum) => {
+            if (err) return next(err);
+            console.log(newAlbum)
+            res.json({updated: 0, _id: newAlbum._id});
+        });
+    } else { // update existing document
+        Album.updateOne({ _id: req.body._id}, {title:req.body.title, author: req.body.author, year: req.body.year }, (err, result) => {
+            if (err) return next(err);
+            res.json({updated: result.nModified, _id: req.body._id});
+        });
+    }
 });
 
 
@@ -164,4 +162,3 @@ app.use( (req,res) => {
 app.listen(app.get('port'), () => {
  console.log('Express started'); 
 });
-
