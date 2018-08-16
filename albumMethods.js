@@ -36,8 +36,7 @@ exports.addAlbum = (newAlbum) => {
         }
         //console.log(result);
         var msg = {};
-        if (result.nModified) {
-            
+        if (result.nModified) {           
             var msg = 
                 {"new":false,
                 "modified":true

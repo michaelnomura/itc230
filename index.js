@@ -137,7 +137,7 @@ app.post('/api/v1/new_album', (req, res, next) => {
 app.post('/api/v1/add/', (req,res, next) => {
     // find & update existing item, or add new 
     if (!req.body._id) { // insert new document
-        let album = new Album({title:req.body.title,author:req.body.author,pubdate:req.body.pubdate});
+        let album = new Album({title:req.body.title,author:req.body.author,year:req.body.year});
         album.save((err,newAlbum) => {
             if (err) return next(err);
             console.log(newAlbum)
